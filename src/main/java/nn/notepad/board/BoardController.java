@@ -15,9 +15,10 @@ public class BoardController {
     private final BoardService service;
 
     @GetMapping
-    public Response<List<BoardDto>> getList(){
-        return new Response<>(true,service.getList());
+    public Response<List<BoardDto>> getList(@RequestParam(required = false) String keyword){
+        return new Response<>(true,service.getList(keyword));
     }
+
 
     @GetMapping("/{id}")
     public Response<BoardDto> getById(@PathVariable Long id){

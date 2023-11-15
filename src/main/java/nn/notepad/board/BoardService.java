@@ -4,9 +4,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +20,9 @@ public class BoardService {
     private String path;
 
 
-    public List<BoardDto> getList(){
-        return repository.findAll().stream().map(BoardDto::new).toList();
+    public List<BoardDto> getList(String keyword){
+        List<Board> result = StringUtils.hasText(keyword) ? repository.findByTitleLike(keyword) : repository.findAll();
+        return result.stream().map(BoardDto::new).toList();
     }
 
     public BoardDto getOne(Long id)  {
